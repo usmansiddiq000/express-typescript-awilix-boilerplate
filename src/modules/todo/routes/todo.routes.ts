@@ -25,6 +25,17 @@ export class TodoRouter {
             this.todoController.create
         )
         .get(this.todoController.getAll);
+
+    this.app.route('/api/todo/:todoId')
+        .put(
+            this.todoValidator.validationTodoSchema('update'),
+            this.errorHandler.validatorErrorHandler,
+            this.todoController.update,
+        )
+        .get(this.todoController.getById)
+        .delete(this.todoController.removeById);
+
+    this.app.param('todoId', this.todoController.todoById);
   };
 }
 

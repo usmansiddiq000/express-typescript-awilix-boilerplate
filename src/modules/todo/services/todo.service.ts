@@ -2,11 +2,11 @@ import {Mongoose} from 'mongoose';
 import {ITodo} from '../interfaces';
 
 export class TodoService {
-  moongose: Mongoose;
+  mongoose: Mongoose;
   todoCollection;
   constructor({mongoose}) {
-    this.moongose = mongoose;
-    this.todoCollection = this.moongose.model('Todo');
+    this.mongoose = mongoose;
+    this.todoCollection = this.mongoose.model('Todo');
   }
 
   create = async (data: ITodo): Promise<ITodo> => {
@@ -20,6 +20,12 @@ export class TodoService {
   };
 
   findByName = async (name: string): Promise<ITodo> => {
-    return await this.todoCollection.find({isDeleted: false, name: name});
+    return await this.todoCollection.findOne({isDeleted: false, name: name});
+  };
+
+  findById = async (id: string): Promise<ITodo> => {
+    return await this.todoCollection.findOne(
+        {isDeleted: false, _id: new this.mongoose.Types.ObjectId(id)}
+    );
   };
 }
