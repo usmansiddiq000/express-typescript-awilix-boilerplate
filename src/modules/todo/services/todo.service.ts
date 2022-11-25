@@ -16,4 +16,8 @@ export class TodoService {
     getAll = async () => {
         return await this.todoCollection.find({isDeleted: false});
     };
+
+    findByName = async (name: string) => {
+        return await this.todoCollection.find({isDeleted: false, name: name});
+    }
 }

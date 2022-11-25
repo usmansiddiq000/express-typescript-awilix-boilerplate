@@ -1,7 +1,8 @@
+import { TodoService } from "../services";
 
 
 export class TodoController {
-    todoService;
+    todoService: TodoService;
     constructor({todoService}){
         this.todoService = todoService
     }
