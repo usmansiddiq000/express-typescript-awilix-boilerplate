@@ -1,1 +1,1 @@
-export { default as container } from './container.config';
+export {default as container} from './container.config';

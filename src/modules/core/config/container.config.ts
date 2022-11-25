@@ -1,20 +1,19 @@
-import { createContainer, InjectionMode, asValue, asClass, Lifetime } from 'awilix';
+import {createContainer, InjectionMode, asValue, asClass} from 'awilix';
 import express from 'express';
 import mongoose from 'mongoose';
 import ExpressApp from '../../../../app';
 
 
-
-let container = createContainer({
-  injectionMode: InjectionMode.PROXY
+const container = createContainer({
+  injectionMode: InjectionMode.PROXY,
 });
 
-console.log("Registering dependencies...");
+console.log('Registering dependencies...');
 
 container.register({
-    app: asValue(express()),
-    expressApp: asClass(ExpressApp),
-    mongoose: asValue(mongoose)
+  app: asValue(express()),
+  expressApp: asClass(ExpressApp),
+  mongoose: asValue(mongoose),
 });
 
 

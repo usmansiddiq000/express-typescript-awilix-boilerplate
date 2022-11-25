@@ -1,50 +1,50 @@
-import http from 'http'
-import * as dotenv from 'dotenv'
+import http from 'http';
+import * as dotenv from 'dotenv';
 dotenv.config();
-import { container } from '../src/modules/core/config';
+import {container} from '../src/modules/core/config';
 import fs from 'fs';
 import path from 'path';
 
 class Server {
-    constructor(){}
+  init = async () => {
+    await this.initAllContainerRegisterations();
 
-    init = async () => {
+    // Models must be resolve before all other classes
+    await this.resolveModels();
 
-        await this.initAllContainerRegisterations();
+    // Resolve all Registration except models
+    await this.resolveOtherRegisterations();
 
-        // Models must be resolve before all other classes
-        await this.resolveModels();
+    const app = container.resolve('app');
+    app.set('port', process.env.port);
+    const server = http.createServer(app);
+    server.listen(process.env.PORT);
+    server.on('listening', () => {
+      console.log('Express server listening on ' + process.env.PORT);
+    });
+  };
 
-         // Resolve all Registration except models
-        await this.resolveOtherRegisterations();
+  initAllContainerRegisterations = async () => {
+    const allModules = await fs.promises.readdir(path.join(__dirname, '../src/modules'));
+    allModules.forEach(async (modules) => {
+      import(path.relative(__dirname, `src/modules/${modules}`));
+    });
+  };
 
-        const app = container.resolve('app');
-        app.set('port', process.env.port);
-        const server = http.createServer(app);
-        server.listen(process.env.PORT);
-        server.on('listening', () => {
-            console.log('Express server listening on ' + process.env.PORT);
-        })
-    }
+  resolveModels = async () => {
+    const allModels = Object.keys(container.registrations).filter(
+        (key) => key.includes('Model')
+    );
+    allModels.map((model) => container.resolve(model));
+  };
 
-    initAllContainerRegisterations = async () => {
-        const allModules = await fs.promises.readdir(path.join(__dirname, '../src/modules'));
-        allModules.forEach(async(modules) => {
-            import (path.relative(__dirname, `src/modules/${modules}`))
-        })
-    };
-
-    resolveModels = async () => {
-        const allModels = Object.keys(container.registrations).filter(key => key.includes('Model'));
-        allModels.map(model => container.resolve(model));    
-    }
-
-    resolveOtherRegisterations = async () => {
-        const allOtherRegidtrations = Object.keys(container.registrations).filter(key => !key.includes('Model'));
-        allOtherRegidtrations.map(key => container.resolve(key));
-    }
-
+  resolveOtherRegisterations = async () => {
+    const allOtherRegidtrations = Object.keys(container.registrations).filter(
+        (key) => !key.includes('Model')
+    );
+    allOtherRegidtrations.map((key) => container.resolve(key));
+  };
 }
 
 
-export default new Server().init()
+export default new Server().init();

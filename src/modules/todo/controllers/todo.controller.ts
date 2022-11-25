@@ -1,29 +1,33 @@
-import { TodoService } from "../services";
+import {ErrorHandler, ResponseHandler} from '../../core/middlewares';
+import {TodoService} from '../services';
 
 
 export class TodoController {
-    todoService: TodoService;
-    constructor({todoService}){
-        this.todoService = todoService
+  todoService: TodoService;
+  errorHandler: ErrorHandler;
+  responseHandler: ResponseHandler;
+  constructor({todoService, errorHandler, responseHandler}) {
+    this.todoService = todoService;
+    this.errorHandler = errorHandler;
+    this.responseHandler = responseHandler;
+  }
+
+  create = async (req, res) => {
+    try {
+      const todo = this.todoService.create(req.body);
+      this.responseHandler.handle200(res, {todo});
+    } catch (e) {
+      return this.errorHandler.handle500(res, e.message);
     }
+  };
 
-    create = async (req, res) => {
-        try {
-            const todo = this.todoService.create(req.body);
-            res.status(200).jsonp(todo)
-        } catch (e) {
-            res.status(500).jsonp({message: e.message})
-        }
-    };
-
-    getAll = async (req, res) => {
-        try {
-          const todos = await this.todoService.getAll()
-          res.status(200).jsonp(todos)
-        } catch (e) {
-            res.status(500).jsonp({message: e.message})
-        }
-      };
+  getAll = async (req, res) => {
+    try {
+      const todos = await this.todoService.getAll();
+      this.responseHandler.handle200(res, {todos});
+    } catch (e) {
+      return this.errorHandler.handle500(res, e.message);
+    }
+  };
 }
 
-  

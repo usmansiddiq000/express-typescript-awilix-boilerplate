@@ -1,1 +1,1 @@
-export { TodoValidator } from './todo.validator';
+export {TodoValidator} from './todo.validator';
