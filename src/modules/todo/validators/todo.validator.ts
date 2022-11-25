@@ -1,4 +1,4 @@
-import { TodoService } from '../services';
+import {TodoService} from '../services';
 import {body} from 'express-validator';
 
 export class TodoValidator {
