@@ -1,0 +1,7 @@
+node_modules/
+/.idea
+/.vscode
+build/
+**/.DS_Store
+yarn-error.log
+coverage/
