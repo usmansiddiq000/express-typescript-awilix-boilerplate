@@ -10,6 +10,7 @@ export class TodoRouter {
   public errorHandler: ErrorHandler;
 
   constructor({app, todoController, todoValidator, errorHandler}) {
+    this.errorHandler = errorHandler;
     this.todoController = todoController;
     this.todoValidator = todoValidator;
     this.app = app;
