@@ -5,6 +5,7 @@ import {TodoRouter} from './routes';
 import {TodoModel} from './models';
 import {TodoService} from './services';
 import {TodoValidator} from './validators';
+import {TodoSocket} from './sockets';
 
 container.register({
   todoRouter: asClass(TodoRouter),
@@ -12,5 +13,6 @@ container.register({
   todoController: asClass(TodoController),
   todoModel: asClass(TodoModel),
   todoValidator: asClass(TodoValidator),
+  todoSocket: asClass(TodoSocket),
 });
 
