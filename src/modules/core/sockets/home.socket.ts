@@ -10,9 +10,9 @@ export class HomeSocket {
   }
 
   init = () => {
-    this.socket.on('message2', (data) => {
+    this.socket.on('home', (data, callback) => {
       console.log(this.socket.id);
-      this.socket.emit('something');
+      callback(`${data} ${this.socket.id}`);
     });
   };
 }

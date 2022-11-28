@@ -5,6 +5,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDefinition from './swagger-definition';
 import path from 'path';
+import cors from 'cors';
 
 const swaggerOptions = {
   swaggerDefinition,
@@ -24,6 +25,7 @@ export default class ExpressApp {
 
   initApp = async () => {
     try {
+      this.app.use(cors());
       this.app.use(express.json());
       this.app.use(compression());
       this.app.use(helmet({contentSecurityPolicy: false}));

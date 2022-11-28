@@ -10,9 +10,8 @@ export class TodoSocket {
   }
 
   init = () => {
-    this.socket.on('message', (data) => {
-      console.log(this.socket.id);
-      this.socket.emit('something');
+    this.socket.on('todo', (data, callback) => {
+      callback(`${data} ${this.socket.id}`);
     });
   };
 }
